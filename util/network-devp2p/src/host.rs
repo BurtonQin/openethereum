@@ -396,7 +396,7 @@ impl Host {
 			drop(info);
 			if let NonReservedPeerMode::Deny = mode {
 				// disconnect all non-reserved peers here.
-				let reserved: HashSet<NodeId> = self.reserved_nodes.read().clone();
+                                let reserved: HashSet<NodeId> = self.reserved_nodes.read().clone();
 				let mut to_kill = Vec::new();
 				for (_, e) in self.sessions.read().iter() {
 					let mut s = e.lock();
@@ -410,6 +410,7 @@ impl Host {
 					s.disconnect(io, DisconnectReason::ClientQuit);
 					to_kill.push(s.token());
 				}
+                                let _reserved = self.reserved_nodes.read();
 				for p in to_kill {
 					trace!(target: "network", "Disconnecting on reserved-only mode: {}", p);
 					self.kill_connection(p, io, false);
